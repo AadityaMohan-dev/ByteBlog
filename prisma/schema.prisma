@@ -1,0 +1,68 @@
+// This is your Prisma schema file.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         String     @id @default(cuid())
+  clerkId    String     @unique
+  email      String     @unique
+  firstName  String?
+  lastName   String?
+  avtarUrl   String?
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+
+  // Relations
+  blog       Blog[]
+  comments   Comment[]
+
+  // Followers / Following (single join table)
+  following  User[]     @relation("UserFollows")
+  followers  User[]     @relation("UserFollows")
+
+  // Likes (Many-to-many with Blog)
+  likedBlogs Blog[]     @relation("BlogLikes")
+}
+
+model Blog {
+  id          String     @id @default(cuid())
+  title       String
+  description String
+  thumbnail   String
+  contentHtml String
+  contentJson Json
+  categories  String[]
+
+  author      User       @relation(fields: [authorId], references: [id])
+  authorId    String
+
+  comments    Comment[]
+
+  // Likes (Many-to-many)
+  likedBy     User[]     @relation("BlogLikes")
+
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Comment {
+  id        String     @id @default(cuid())
+  content   String
+
+  author    User       @relation(fields: [authorId], references: [id])
+  authorId  String
+
+  blog      Blog       @relation(fields: [blogId], references: [id])
+  blogId    String
+
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
