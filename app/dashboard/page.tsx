@@ -152,7 +152,7 @@ export default async function DashboardPage({
             ) : (
               blogs.map((blog, index) => (
                 <Link key={blog.id} href={`/blog/${blog.id}`}>
-                  <article className="flex py-6 flex-col sm:flex-row gap-4 sm:gap-6 group border-b sm:px-0 hover:bg-gray-50 transition-all rounded-lg sm:p-4">
+                  <article className="flex py-6 flex-col sm:flex-row gap-4 sm:gap-6 group border-b sm:px-0 hover:bg-gray-50 transition-all  sm:p-4">
                     {/* Text Content */}
                     <div className="flex-1 space-y-2">
                       <CardTitle className="text-xl font-semibold leading-snug group-hover:underline line-clamp-2">
