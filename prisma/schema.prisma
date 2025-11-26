@@ -1,5 +1,3 @@
-// This is your Prisma schema file.
-
 generator client {
   provider = "prisma-client"
   output   = "../lib/generated/prisma"
@@ -16,53 +14,62 @@ model User {
   email      String     @unique
   firstName  String?
   lastName   String?
-  avtarUrl   String?
+  avatarUrl  String?    
+  followers  Int        @default(0)
   createdAt  DateTime   @default(now())
   updatedAt  DateTime   @updatedAt
 
-  // Relations
   blog       Blog[]
   comments   Comment[]
-
-  // Followers / Following (single join table)
   following  User[]     @relation("UserFollows")
-  followers  User[]     @relation("UserFollows")
-
-  // Likes (Many-to-many with Blog)
+  followedBy User[]     @relation("UserFollows")
   likedBlogs Blog[]     @relation("BlogLikes")
+
+  @@index([clerkId])
+  @@index([email])
+  @@index([followers(sort: Desc)])
+  @@map("users")
 }
 
 model Blog {
   id          String     @id @default(cuid())
-  title       String
-  description String
-  thumbnail   String
-  contentHtml String
-  contentJson Json
+  title       String     @db.Text
+  description String?    @db.Text
+  thumbnail   String?
+  contentHtml String?    @db.Text
+  contentJson Json?
   categories  String[]
 
-  author      User       @relation(fields: [authorId], references: [id])
+  author      User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId    String
 
   comments    Comment[]
-
-  // Likes (Many-to-many)
   likedBy     User[]     @relation("BlogLikes")
 
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
+
+  @@index([authorId])
+  @@index([createdAt(sort: Desc)])
+  @@index([categories])
+  @@map("blogs")
 }
 
 model Comment {
   id        String     @id @default(cuid())
-  content   String
+  content   String     @db.Text
 
-  author    User       @relation(fields: [authorId], references: [id])
+  author    User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId  String
 
-  blog      Blog       @relation(fields: [blogId], references: [id])
+  blog      Blog       @relation(fields: [blogId], references: [id], onDelete: Cascade)
   blogId    String
 
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
+
+  @@index([authorId])
+  @@index([blogId])
+  @@index([createdAt(sort: Desc)])
+  @@map("comments")
 }

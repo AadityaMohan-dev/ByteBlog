@@ -1,12 +1,11 @@
 import Home from '@/components/general/LandingPage'
-import UserProfile from '@/components/general/UserProfile'
 
  function page() {
   
   return (
    <div>
-      {/* <Home/> */}
-      <UserProfile/>
+      <Home/>
+      
     </div>
   )
 }

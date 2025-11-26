@@ -28,10 +28,10 @@ export default async function Navbar() {
             <Link href="/dashboard" className="text-gray-500 hover:text-green-700">Home</Link>
           </div>
           <div id="list" className="hidden md:flex space-x-4">
-            <Link href="/dashboard" className="text-gray-500 hover:text-green-700">About</Link>
+            <Link href="/about" className="text-gray-500 hover:text-green-700">About</Link>
           </div>
           <div id="list" className="hidden md:flex space-x-4">
-            <Link href="/dashboard" className="text-gray-500 hover:text-green-700">Settings</Link>
+            <Link href="/profile" className="text-gray-500 hover:text-green-700">Settings</Link>
           </div>
         </div>
 
@@ -41,9 +41,21 @@ export default async function Navbar() {
             <div className="flex items-center space-x-4">
               <Link
             href="/blog/create"
-            className="bg-black text-white flex items-center justify-center rounded-full px-5 py-2 text-sm font-medium hover:bg-green-700 transition"
+            className="hidden sm:flex items-center gap-2 px-4 py-2  rounded-lg border hover:bg-gray-900 hover:text-white transition-colors text-sm"
           >
-            Write
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                clipRule="evenodd"
+              />
+            </svg>
+            Create Blog
           </Link>
              <Link href = "/profile"><img src={user?.imageUrl} alt="User" className="rounded-full h-10 w-10" /></Link> 
               <SignOutButton redirectUrl="/main">
